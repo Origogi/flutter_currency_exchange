@@ -1,9 +1,13 @@
 # flutter_currency
 
-환율 정보를 나타내는 앱입니다.
+This app allows users to view real-time exchange rate information.
 
-## UI 참고
+## UI/UX inspiration
 (https://dribbble.com/shots/6565328-Financial-Assistant-App-Animation?utm_source=pinterest&utm_medium=referral&utm_campaign=pinterest_dribbble_sharing)
+
+## Icon
+
+https://www.flaticon.com/packs/international-flags-3
 
 ## TODO 
 
