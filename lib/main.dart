@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_currency/model/Currency.dart';
 import 'package:flutter_currency/theme/theme.dart';
 
 void main() => runApp(MyApp());
@@ -25,6 +26,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Currency _myCurrency = currencyBank[southKorea];
+  List<Currency> _currencies = [
+    currencyBank[usa],
+    currencyBank[japan],
+    currencyBank[eu],
+    currencyBank[china]
+  ];
+
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -72,8 +81,7 @@ class _HomePageState extends State<HomePage> {
                             Container(
                                 height: 50,
                                 width: 50,
-                                child: Image.asset(
-                                    'assets/images/094-south-korea.png')),
+                                child: Image.asset(_myCurrency.imageFileName)),
                             SizedBox(
                               width: 15,
                             ),
@@ -81,14 +89,14 @@ class _HomePageState extends State<HomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  'South Korea',
-                                  style: textTheme.body1,
+                                  _myCurrency.nationName,
+                                  style: textTheme.title,
                                 ),
                                 SizedBox(
-                                  height: 15,
+                                  height: 10,
                                 ),
                                 Text(
-                                  '￦ 1,000',
+                                  '${_myCurrency.symbol} 1,000',
                                   style: TextStyle(
                                       fontSize: 30, color: Colors.blue),
                                 ),
@@ -111,74 +119,30 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: ListTile(
-                    leading: Container(
-                        height: 50,
-                        width: 50,
-                        child: Image.asset(
-                            'assets/images/259-european-union.png')),
-                    title: Text('EU'),
-                    subtitle: Text(
-                      '1 EUR = 1296.1 KRW',
-                      style: textTheme.body2,
-                    ),
-                    trailing: Text('€ 5,198.2'),
-                  ),
-                  
-                ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: ListTile(
-                    leading: Container(
-                        height: 50,
-                        width: 50,
-                        child: Image.asset(
-                            'assets/images/259-european-union.png')),
-                    title: Text('EU'),
-                    subtitle: Text(
-                      '1 EUR = 1296.1 KRW',
-                      style: textTheme.body2,
-                    ),
-                    trailing: Text('€ 5,198.2'),
-                  ),
-                  
-                ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: ListTile(
-                    leading: Container(
-                        height: 50,
-                        width: 50,
-                        child: Image.asset(
-                            'assets/images/259-european-union.png')),
-                    title: Text('EU'),
-                    subtitle: Text(
-                      '1 EUR = 1296.1 KRW',
-                      style: textTheme.body2,
-                    ),
-                    trailing: Text('€ 5,198.2'),
-                  ),
-                  
-                ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: Container(
-                    height: 50,
-                    child: Center(
-                      child : Icon(Icons.add,size: 20,)
-                    ),
-                  )
-                  
+                Expanded(
+                  child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      itemCount: _currencies.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: ListTile(
+                            leading: Container(
+                                height: 50,
+                                width: 50,
+                                child: Image.asset(
+                                    _currencies[index].imageFileName)),
+                            title: Text(_currencies[index].nationName),
+                            subtitle: Text(
+                              '1 ${_currencies[index].code} = 1296 ${_myCurrency.code}',
+                              style: textTheme.body2,
+                            ),
+                            trailing: Text('${_currencies[index].symbol} 5,198.2'), 
+                          ),
+                        );
+                      }),
                 )
               ],
             ),
