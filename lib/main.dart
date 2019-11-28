@@ -34,6 +34,8 @@ class _HomePageState extends State<HomePage> {
     currencyBank[china]
   ];
 
+  bool selected = false;
+
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -41,9 +43,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SafeArea(
         child: Stack(children: <Widget>[
-          Container(
+          AnimatedContainer(
+            duration: Duration(milliseconds: 500),
+            curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
             width: double.infinity,
-            height: 180,
+            height: selected ? 360.0 : 180.0,
             color: Colors.blue,
           ),
           Container(
@@ -51,13 +55,59 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Icon(
-                  Icons.menu,
-                  size: 30,
-                  color: Colors.white,
+                IconButton(
+                  icon: Icon(
+                    Icons.menu,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      selected = !selected;
+                    });
+                  },
                 ),
                 SizedBox(
                   height: 10,
+                ),
+                AnimatedContainer(
+                  height: selected ? 200.0 : 0.0,
+                  width: double.infinity,
+                  duration: Duration(milliseconds: 500),
+                  curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
+                  child: AnimatedOpacity(
+                    opacity: selected ? 1.0 : 0.0,
+                    duration: Duration(milliseconds: 500),
+                    curve: selected ? Curves.easeInQuint : Curves.easeOutQuint,
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          ListTile(
+                            leading: Icon(
+                              Icons.show_chart,
+                              color: Colors.white,
+                            ),
+                            title: Text(
+                              'Charts',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          ListTile(
+                            leading:
+                                Icon(Icons.compare_arrows, color: Colors.white),
+                            title: Text('Calculater',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.settings, color: Colors.white),
+                            title: Text('Settings',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
                 Text(
                   'Currency Calculate',
@@ -139,7 +189,8 @@ class _HomePageState extends State<HomePage> {
                               '1 ${_currencies[index].code} = 1296 ${_myCurrency.code}',
                               style: textTheme.body2,
                             ),
-                            trailing: Text('${_currencies[index].symbol} 5,198.2'), 
+                            trailing:
+                                Text('${_currencies[index].symbol} 5,198.2'),
                           ),
                         );
                       }),
