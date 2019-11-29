@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage>
             duration: Duration(milliseconds: 500),
             curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
             width: double.infinity,
-            height: selected ? 360.0 : 180.0,
+            height: selected ? 250.0 : 180.0,
             color: Colors.blue,
           ),
           Container(
@@ -128,6 +128,13 @@ class _HomePageState extends State<HomePage>
                       ),
                     ),
                   ),
+                ),
+                Stack(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[],
+                    )
+                  ],
                 ),
                 Text(
                   'Currency Calculate',
@@ -218,6 +225,14 @@ class _HomePageState extends State<HomePage>
               ],
             ),
           ),
+          AnimatedContainer(
+            margin: selected? EdgeInsets.only(top: 250) : EdgeInsets.only(top: 180),
+            width: double.infinity,
+            height: double.infinity,
+            color: selected ? Colors.black54 : Colors.transparent,
+            duration: Duration(milliseconds: 500),
+            curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
+          )
         ]),
       ),
     );
