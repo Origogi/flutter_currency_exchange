@@ -11,21 +11,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: kLightTheme,
-      home: HomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  HomePage({Key key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   Currency _myCurrency = currencyBank[southKorea];
   List<Currency> _currencies = [
     currencyBank[usa],
@@ -34,7 +33,22 @@ class _HomePageState extends State<HomePage> {
     currencyBank[china]
   ];
 
+  AnimationController _animationController;
+
   bool selected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +70,20 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 IconButton(
-                  icon: Icon(
-                    Icons.menu,
+                  icon: AnimatedIcon(
                     size: 30,
+                    icon: AnimatedIcons.menu_arrow,
+                    progress: _animationController,
                     color: Colors.white,
                   ),
                   onPressed: () {
                     setState(() {
                       selected = !selected;
+                      if (selected) {
+                        _animationController.forward();
+                      } else {
+                        _animationController.reverse();
+                      }
                     });
                   },
                 ),
