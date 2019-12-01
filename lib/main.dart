@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_currency/model/Currency.dart';
+import 'package:flutter_currency/bloc/currency_bloc.dart';
 import 'package:flutter_currency/theme/theme.dart';
+
+import 'model/currency.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,13 +27,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  Currency _myCurrency = currencyBank[southKorea];
-  List<Currency> _currencies = [
-    currencyBank[usa],
-    currencyBank[japan],
-    currencyBank[eu],
-    currencyBank[china]
-  ];
+  // Currency _myCurrency = currencyBank[southKorea];
+  // List<Currency> _currencies = [
+  //   currencyBank[usa],
+  //   currencyBank[japan],
+  //   currencyBank[eu],
+  //   currencyBank[china]
+  // ];
+
+  CurrencyBloc currencyBloc = new CurrencyBloc();
 
   AnimationController _animationController;
 
@@ -153,40 +157,51 @@ class _HomePageState extends State<HomePage>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Container(
-                                height: 50,
-                                width: 50,
-                                child: Image.asset(_myCurrency.imageFileName)),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        StreamBuilder(
+                          stream: currencyBloc.myCurrencyObservable,
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return Container();
+                            }
+                            Currency myCurrency = snapshot.data;
+
+                            return Row(
                               children: <Widget>[
-                                Text(
-                                  _myCurrency.nationName,
-                                  style: textTheme.title,
-                                ),
+                                Container(
+                                    height: 50,
+                                    width: 50,
+                                    child:
+                                        Image.asset(myCurrency.imageFileName)),
                                 SizedBox(
-                                  height: 10,
+                                  width: 15,
                                 ),
-                                Text(
-                                  '${_myCurrency.symbol} 1,000',
-                                  style: TextStyle(
-                                      fontSize: 30, color: Colors.blue),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Text(
-                                  '2019-11-11 WED 10:00 am',
-                                  style: textTheme.body2,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      myCurrency.nationName,
+                                      style: textTheme.title,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      '${myCurrency.symbol} 1,000',
+                                      style: TextStyle(
+                                          fontSize: 30, color: Colors.blue),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Text(
+                                      '2019-11-11 WED 10:00 am',
+                                      style: textTheme.body2,
+                                    ),
+                                  ],
                                 ),
                               ],
-                            ),
-                          ],
+                            );
+                          },
                         ),
                         FloatingActionButton(
                           child: Icon(Icons.search),
@@ -196,37 +211,58 @@ class _HomePageState extends State<HomePage>
                     ),
                   ),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      itemCount: _currencies.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          child: ListTile(
-                            leading: Container(
-                                height: 50,
-                                width: 50,
-                                child: Image.asset(
-                                    _currencies[index].imageFileName)),
-                            title: Text(_currencies[index].nationName),
-                            subtitle: Text(
-                              '1 ${_currencies[index].code} = 1296 ${_myCurrency.code}',
-                              style: textTheme.body2,
-                            ),
-                            trailing:
-                                Text('${_currencies[index].symbol} 5,198.2'),
-                          ),
-                        );
-                      }),
-                )
+                StreamBuilder(
+                  stream: currencyBloc.myCurrencyObservable,
+                  builder: (context, snapShot) {
+                    if (!snapShot.hasData) {
+                      return Container();
+                    }
+                    Currency myCurrency = snapShot.data;
+
+                    return StreamBuilder(
+                        stream: currencyBloc.comparedCurrenciesObservable,
+                        builder: (context, snapshot) {
+                          if (!snapShot.hasData) {
+                            return Container();
+                          }
+
+                          List<Currency> currencies = snapshot.data;
+                          return Expanded(
+                            child: ListView.builder(
+                                physics: BouncingScrollPhysics(),
+                                itemCount: currencies.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                    child: ListTile(
+                                      leading: Container(
+                                          height: 50,
+                                          width: 50,
+                                          child: Image.asset(
+                                              currencies[index].imageFileName)),
+                                      title: Text(currencies[index].nationName),
+                                      subtitle: Text(
+                                        '1 ${currencies[index].code} = 1296 ${myCurrency.code}',
+                                        style: textTheme.body2,
+                                      ),
+                                      trailing: Text(
+                                          '${currencies[index].symbol} 5,198.2'),
+                                    ),
+                                  );
+                                }),
+                          );
+                        });
+                  },
+                ),
               ],
             ),
           ),
           AnimatedContainer(
-            margin: selected? EdgeInsets.only(top: 250) : EdgeInsets.only(top: 180),
+            margin: selected
+                ? EdgeInsets.only(top: 250)
+                : EdgeInsets.only(top: 180),
             width: double.infinity,
             height: double.infinity,
             color: selected ? Colors.black54 : Colors.transparent,
