@@ -218,42 +218,35 @@ class _HomePageState extends State<HomePage>
                       return Container();
                     }
                     Currency myCurrency = snapShot.data;
+                    List<Currency> currencies =
+                        _getComparedCurrencies(myCurrency);
 
-                    return StreamBuilder(
-                        stream: currencyBloc.comparedCurrenciesObservable,
-                        builder: (context, snapshot) {
-                          if (!snapShot.hasData) {
-                            return Container();
-                          }
-
-                          List<Currency> currencies = snapshot.data;
-                          return Expanded(
-                            child: ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                itemCount: currencies.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                    ),
-                                    child: ListTile(
-                                      leading: Container(
-                                          height: 50,
-                                          width: 50,
-                                          child: Image.asset(
-                                              currencies[index].imageFileName)),
-                                      title: Text(currencies[index].nationName),
-                                      subtitle: Text(
-                                        '1 ${currencies[index].code} = 1296 ${myCurrency.code}',
-                                        style: textTheme.body2,
-                                      ),
-                                      trailing: Text(
-                                          '${currencies[index].symbol} 5,198.2'),
-                                    ),
-                                  );
-                                }),
-                          );
-                        });
+                    return Expanded(
+                      child: ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          itemCount: currencies.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child: ListTile(
+                                leading: Container(
+                                    height: 50,
+                                    width: 50,
+                                    child: Image.asset(
+                                        currencies[index].imageFileName)),
+                                title: Text(currencies[index].nationName),
+                                subtitle: Text(
+                                  '1 ${currencies[index].code} = 1296 ${myCurrency.code}',
+                                  style: textTheme.body2,
+                                ),
+                                trailing:
+                                    Text('${currencies[index].symbol} 5,198.2'),
+                              ),
+                            );
+                          }),
+                    );
                   },
                 ),
               ],
@@ -272,5 +265,11 @@ class _HomePageState extends State<HomePage>
         ]),
       ),
     );
+  }
+
+  List<Currency> _getComparedCurrencies(Currency filtered) {
+    return currencyBank.values
+        .where((currency) => filtered != currency)
+        .toList();
   }
 }
