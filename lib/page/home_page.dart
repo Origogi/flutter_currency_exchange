@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_currency/bloc/bloc_base.dart';
 import 'package:flutter_currency/bloc/currency_bloc.dart';
 import 'package:flutter_currency/model/currency.dart';
+
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -12,7 +14,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  CurrencyBloc currencyBloc = new CurrencyBloc();
 
   AnimationController _animationController;
 
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-
+    final CurrencyBloc currencyBloc = BlocProvider.of<CurrencyBloc>(context);
     return Scaffold(
       body: SafeArea(
         child: Stack(children: <Widget>[
@@ -80,7 +81,7 @@ class _HomePageState extends State<HomePage>
                     opacity: selected ? 1.0 : 0.0,
                     duration: Duration(milliseconds: 500),
                     curve: selected ? Curves.easeInQuint : Curves.easeOutQuint,
-                    child: SingleChildScrollView (
+                    child: SingleChildScrollView(
                       child: Container(
                         padding: EdgeInsets.only(left: 30),
                         child: Column(
