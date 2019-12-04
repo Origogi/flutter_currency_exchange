@@ -41,6 +41,12 @@ class _HomePageState extends State<HomePage>
     List<Currency> currencies = provider.comparedCurrencies;
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: _buildBottomAppBar(context),
       body: SafeArea(
         child: Stack(children: <Widget>[
           AnimatedContainer(
@@ -222,10 +228,22 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  List<Currency> _getComparedCurrencies(Currency filtered) {
-    return currencyBank.values
-        .where((currency) => filtered != currency)
-        .toList();
+  BottomAppBar _buildBottomAppBar(BuildContext context) {
+    final CurrencyProvider provider = Provider.of<CurrencyProvider>(context);
+
+    return BottomAppBar(
+      shape: CircularNotchedRectangle(),
+      color: Theme.of(context).primaryColor,
+      child: Row(
+        children: <Widget>[
+          IconButton(
+              icon: Icon(Icons.sort_by_alpha),
+              onPressed: () {
+                provider.sortComparedCurrencies();
+              }),
+        ],
+      ),
+    );
   }
 }
 
