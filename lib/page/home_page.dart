@@ -56,173 +56,188 @@ class _HomePageState extends State<HomePage>
             height: selected ? 250.0 : 180.0,
             color: Colors.blue,
           ),
-          Container(
-            padding: EdgeInsets.only(left: 10, right: 15, top: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                IconButton(
-                  icon: AnimatedIcon(
-                    size: 30,
-                    icon: AnimatedIcons.menu_arrow,
-                    progress: _animationController,
-                    color: Colors.white,
+          SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  IconButton(
+                    icon: AnimatedIcon(
+                      size: 30,
+                      icon: AnimatedIcons.menu_arrow,
+                      progress: _animationController,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        selected = !selected;
+                        if (selected) {
+                          _animationController.forward();
+                        } else {
+                          _animationController.reverse();
+                        }
+                      });
+                    },
                   ),
-                  onPressed: () {
-                    setState(() {
-                      selected = !selected;
-                      if (selected) {
-                        _animationController.forward();
-                      } else {
-                        _animationController.reverse();
-                      }
-                    });
-                  },
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                AnimatedContainer(
-                  height: selected ? 200.0 : 0.0,
-                  width: double.infinity,
-                  duration: Duration(milliseconds: 500),
-                  curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
-                  child: AnimatedOpacity(
-                    opacity: selected ? 1.0 : 0.0,
+                  SizedBox(
+                    height: 2,
+                  ),
+                  AnimatedContainer(
+                    height: selected ? 200.0 : 0.0,
+                    width: double.infinity,
                     duration: Duration(milliseconds: 500),
-                    curve: selected ? Curves.easeInQuint : Curves.easeOutQuint,
-                    child: SingleChildScrollView(
-                      child: Container(
-                        padding: EdgeInsets.only(left: 30),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            MenuItem(Icons.show_chart, 'Charts'),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            MenuItem(Icons.compare_arrows, 'Calculator'),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            MenuItem(Icons.settings, 'Settings')
-                          ],
+                    curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
+                    child: AnimatedOpacity(
+                      opacity: selected ? 1.0 : 0.0,
+                      duration: Duration(milliseconds: 500),
+                      curve:
+                          selected ? Curves.easeInQuint : Curves.easeOutQuint,
+                      child: SingleChildScrollView(
+                        child: Container(
+                          padding: EdgeInsets.only(left: 30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              MenuItem(Icons.show_chart, 'Charts'),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              MenuItem(Icons.compare_arrows, 'Calculator'),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              MenuItem(Icons.settings, 'Settings')
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Stack(
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[],
-                    )
-                  ],
-                ),
-                Text(
-                  'Currency Calculate',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.all(15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Container(
-                                height: 50,
-                                width: 50,
-                                child: Image.asset(myCurrency.imageFileName)),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  myCurrency.nationName,
-                                  style: textTheme.title,
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  '${myCurrency.symbol} 1,000',
-                                  style: TextStyle(
-                                      fontSize: 30, color: Colors.blue),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Text(
-                                  '2019-11-11 WED 10:00 am',
-                                  style: textTheme.body2,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.settings),
-                          onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return ItemPickerPage();
-                            }));
-                          },
-                        )
-                      ],
+                  AnimatedContainer(
+                    padding: EdgeInsets.all(15),
+                    duration: Duration(milliseconds: 500),
+                    curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
+                    foregroundDecoration: BoxDecoration(
+                      color: selected ? Colors.black54 : Colors.transparent,
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      itemCount: currencies.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Currency Calculate',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),
-                          child: ListTile(
-                            leading: Container(
-                                height: 50,
-                                width: 50,
-                                child: Image.asset(
-                                    currencies[index].imageFileName)),
-                            title: Text(currencies[index].nationName),
-                            subtitle: Text(
-                              '1 ${currencies[index].code} = 1296 ${myCurrency.code}',
-                              style: textTheme.body2,
+                          child: Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.all(15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                        height: 50,
+                                        width: 50,
+                                        child: Image.asset(
+                                            myCurrency.imageFileName)),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          myCurrency.nationName,
+                                          style: textTheme.title,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          '${myCurrency.symbol} 1,000',
+                                          style: TextStyle(
+                                              fontSize: 30, color: Colors.blue),
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Text(
+                                          '2019-11-11 WED 10:00 am',
+                                          style: textTheme.body2,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.settings),
+                                  onPressed: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return ItemPickerPage();
+                                    }));
+                                  },
+                                )
+                              ],
                             ),
-                            trailing:
-                                Text('${currencies[index].symbol} 5,198.2'),
                           ),
-                        );
-                      }),
-                ),
-              ],
+                        ),
+                        ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            itemCount: currencies.length,
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onLongPress: () {
+                                  print('long press');
+                                },
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  child: ListTile(
+                                    leading: Container(
+                                        height: 50,
+                                        width: 50,
+                                        child: Image.asset(
+                                            currencies[index].imageFileName)),
+                                    title: Text(currencies[index].nationName),
+                                    subtitle: Text(
+                                      '1 ${currencies[index].code} = 1296 ${myCurrency.code}',
+                                      style: textTheme.body2,
+                                    ),
+                                    trailing: Text(
+                                        '${currencies[index].symbol} 5,198.2'),
+                                  ),
+                                ),
+                              );
+                            }),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          AnimatedContainer(
-            margin: selected
-                ? EdgeInsets.only(top: 250)
-                : EdgeInsets.only(top: 180),
-            width: double.infinity,
-            height: double.infinity,
-            color: selected ? Colors.black54 : Colors.transparent,
-            duration: Duration(milliseconds: 500),
-            curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
-          )
+          // AnimatedContainer(
+          //   margin: selected
+          //       ? EdgeInsets.only(top: 250)
+          //       : EdgeInsets.only(top: 180),
+          //   width: double.infinity,
+          //   height: double.infinity,
+          //   color: selected ? Colors.black54 : Colors.transparent,
+          //   duration: Duration(milliseconds: 500),
+          //   curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
+          // )
         ]),
       ),
     );
