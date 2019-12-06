@@ -6,11 +6,16 @@ import 'package:flutter_currency/provider/currency_provider.dart';
 import 'package:provider/provider.dart';
 
 class ItemPickerPage extends StatelessWidget {
+
+  List<Currency> _currencies;
+  Function _itemSelectedFuction;
+
+  ItemPickerPage(this._currencies, this._itemSelectedFuction);
+
   @override
   Widget build(BuildContext context) {
     final CurrencyProvider provider = Provider.of<CurrencyProvider>(context);
 
-    List<Currency> currencies = provider.comparedCurrencies;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -21,11 +26,11 @@ class ItemPickerPage extends StatelessWidget {
       body: Container(
           child: ListView.builder(
               physics: BouncingScrollPhysics(),
-              itemCount: currencies.length,
+              itemCount: _currencies.length,
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    provider.updateMyCurrency(currencies[index]);
+                    _itemSelectedFuction(context, _currencies[index]);
                     Navigator.pop(context);
                   },
                   child: Card(
@@ -40,13 +45,13 @@ class ItemPickerPage extends StatelessWidget {
                             height: 50,
                             width: 50,
                             child:
-                                Image.asset(currencies[index].imageFileName)),
-                        title: Text(currencies[index].nationName),
+                                Image.asset(_currencies[index].imageFileName)),
+                        title: Text(_currencies[index].nationName),
                         trailing: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text(currencies[index].code),
-                            Text(currencies[index].symbol),
+                            Text(_currencies[index].code),
+                            Text(_currencies[index].symbol),
                           ],
                         )),
                   ),

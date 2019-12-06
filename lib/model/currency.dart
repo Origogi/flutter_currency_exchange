@@ -12,15 +12,18 @@ final eu = 'EU';
 final usa = 'U.S.A.';
 final japan = 'Japan';
 final china = 'China';
+final gb = 'United Kingdom';
+final mexico = 'Mexico';
+final hongkong = 'HongKong';
 
-var currencyBank = {
+final currencyBank = {
   southKorea: Currency(
       code: 'KRW',
       symbol: '₩',
       nationName: southKorea,
       imageFileName: 'assets/images/094-south-korea.png'),
   eu: Currency(
-    code: 'EUR',
+      code: 'EUR',
       symbol: '€',
       nationName: eu,
       imageFileName: 'assets/images/259-european-union.png'),
@@ -39,4 +42,19 @@ var currencyBank = {
       code: 'CHY',
       nationName: china,
       imageFileName: 'assets/images/034-china.png'),
+  gb: Currency(
+      code: 'GBP',
+      symbol: "£",
+      nationName: gb,
+      imageFileName: 'assets/images/260-united-kingdom.png'),
+  hongkong: Currency(
+      code: 'HKD',
+      symbol: 'HK\$',
+      nationName: hongkong,
+      imageFileName: 'assets/images/183-hong-kong.png'),
+  mexico: Currency(
+      symbol: '\$',
+      code: 'MXN',
+      nationName: mexico,
+      imageFileName: 'assets/images/252-mexico.png'),
 };

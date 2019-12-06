@@ -3,21 +3,34 @@ import 'package:flutter_currency/model/currency.dart';
 
 class CurrencyProvider extends ChangeNotifier {
   Currency _myCurrency = currencyBank[southKorea];
-  List<Currency> _comparedCurrencies = [];
+  List<Currency> _comparedCurrencies = [
+    currencyBank[southKorea],
+    currencyBank[eu],
+    currencyBank[china],
+    currencyBank[japan],
+    currencyBank[usa],
+  ];
+
+  List<Currency> get notAddedCurrency {
+    return currencyBank.values.toSet().difference(_comparedCurrencies.toSet()).toList();
+  }
 
   Currency get selectedCurrency => _myCurrency;
 
-  List<Currency> get comparedCurrencies => _comparedCurrencies;
+  List<Currency> get comparedCurrencies => _getComparedCurrencies(_myCurrency);
 
   CurrencyProvider() {
     _myCurrency = currencyBank[southKorea];
-    _comparedCurrencies = _getComparedCurrencies(_myCurrency);
   }
 
   void updateMyCurrency(Currency currency) {
     _myCurrency = currency;
-    _comparedCurrencies = _getComparedCurrencies(_myCurrency);
 
+    notifyListeners();
+  }
+
+   void addCurrency(Currency currency) {
+    _comparedCurrencies.add(currency);
     notifyListeners();
   }
 
@@ -27,7 +40,7 @@ class CurrencyProvider extends ChangeNotifier {
   }
 
   List<Currency> _getComparedCurrencies(Currency filtered) {
-    return currencyBank.values
+    return _comparedCurrencies
         .where((currency) => filtered != currency)
         .toList();
   }
