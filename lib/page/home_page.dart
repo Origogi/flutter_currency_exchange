@@ -119,15 +119,16 @@ class _HomePageState extends State<HomePage>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              MenuItem(Icons.show_chart, 'Charts'),
+                              MenuItemWidget(Icons.show_chart, 'Charts'),
                               SizedBox(
                                 height: 15,
                               ),
-                              MenuItem(Icons.compare_arrows, 'Calculator'),
+                              MenuItemWidget(
+                                  Icons.compare_arrows, 'Calculator'),
                               SizedBox(
                                 height: 15,
                               ),
-                              MenuItem(Icons.settings, 'Settings')
+                              MenuItemWidget(Icons.settings, 'Settings')
                             ],
                           ),
                         ),
@@ -226,31 +227,8 @@ class _HomePageState extends State<HomePage>
                               physics: BouncingScrollPhysics(),
                               itemCount: currencies.length,
                               shrinkWrap: true,
-                              itemBuilder: (BuildContext context, int index) {
-                                return GestureDetector(
-                                  onLongPress: () {
-                                    print('long press');
-                                  },
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                    ),
-                                    child: ListTile(
-                                      leading: Container(
-                                          height: 50,
-                                          width: 50,
-                                          child: Image.asset(
-                                              currencies[index].imageFileName)),
-                                      title: Text(currencies[index].nationName),
-                                      subtitle: Text(
-                                        '1 ${currencies[index].code} = 1296 ${myCurrency.code}',
-                                        style: textTheme.body2,
-                                      ),
-                                      trailing: Text(
-                                          '${currencies[index].symbol} 5,198.2'),
-                                    ),
-                                  ),
-                                );
+                              itemBuilder: (context, index) {
+                                return CurrencyItemWidget(currencies[index]);
                               }),
                         ),
                       ],
@@ -284,11 +262,11 @@ class _HomePageState extends State<HomePage>
   }
 }
 
-class MenuItem extends StatelessWidget {
-  IconData _icon;
-  String _title;
+class MenuItemWidget extends StatelessWidget {
+  final IconData _icon;
+  final String _title;
 
-  MenuItem(this._icon, this._title);
+  MenuItemWidget(this._icon, this._title);
 
   @override
   Widget build(BuildContext context) {
@@ -307,6 +285,122 @@ class MenuItem extends StatelessWidget {
           style: TextStyle(fontSize: 18, color: Colors.white),
         )
       ],
+    );
+  }
+}
+
+class CurrencyItemWidget extends StatefulWidget {
+  final Currency _currency;
+
+  CurrencyItemWidget(this._currency);
+  @override
+  _CurrencyItemWidgetState createState() => _CurrencyItemWidgetState(_currency);
+}
+
+class _CurrencyItemWidgetState extends State<CurrencyItemWidget> {
+  Currency _currency;
+  bool _selected = false;
+
+  _CurrencyItemWidgetState(this._currency);
+  @override
+  Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            GestureDetector(
+              onLongPress: () {
+                setState(() {
+                  _selected = true;
+                });
+              },
+              onTapDown: (_) {
+                setState(() {
+                  _selected = false;
+                });
+              },
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Container(
+                          child: Image.asset(_currency.imageFileName),
+                          height: 50,
+                          width: 50,
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(_currency.nationName),
+                            Text(
+                              '1 ${_currency.code} = 1296 ${_currency.code}',
+                              style: textTheme.body2,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                          width: 15,
+                        ),
+                    Text('${_currency.symbol} 5,198.2'),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              curve: _selected ? Curves.easeOutQuint : Curves.easeInQuint,
+              color: Colors.red,
+              height: 80,
+              width: _selected ? 45 : 0,
+              child: InkWell(
+                onTap: () {
+                  print('delete button');
+                },
+                child: Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+      //   child: ListTile(
+      //       leading: Container(
+      //           height: 50,
+      //           width: 50,
+      //           child: Image.asset(_currency.imageFileName)),
+      //       title: Text(_currency.nationName),
+      //       subtitle: Text(
+      //         '1 ${_currency.code} = 1296 ${_currency.code}',
+      //         style: textTheme.body2,
+      //       ),
+      //       trailing: Column(
+      //         children: <Widget>[
+      //           Text('${_currency.symbol} 5,198.2'),
+      //           Icon(Icons.delete)
+      //         ],
+      //       )),
+      // ),
     );
   }
 }
