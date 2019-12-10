@@ -39,6 +39,7 @@ class _HomePageState extends State<HomePage>
 
     Currency myCurrency = provider.selectedCurrency;
     List<Currency> currencies = provider.comparedCurrencies;
+    currencies.forEach((item) => print(item.nationName));
 
     final height = MediaQuery.of(context).size.height;
 
@@ -305,6 +306,7 @@ class _CurrencyItemWidgetState extends State<CurrencyItemWidget> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+    CurrencyProvider provider = Provider.of<CurrencyProvider>(context);
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
@@ -355,52 +357,64 @@ class _CurrencyItemWidgetState extends State<CurrencyItemWidget> {
                       ],
                     ),
                     SizedBox(
-                          width: 15,
-                        ),
-                    Text('${_currency.symbol} 5,198.2'),
+                      width: 15,
+                    ),
+                    // Text('${_currency.symbol} 5,198.2'),
                   ],
                 ),
               ),
             ),
-            SizedBox(
-              width: 10,
-            ),
-            AnimatedContainer(
-              duration: Duration(milliseconds: 500),
-              curve: _selected ? Curves.easeOutQuint : Curves.easeInQuint,
-              color: Colors.red,
-              height: 80,
-              width: _selected ? 45 : 0,
-              child: InkWell(
-                onTap: () {
-                  print('delete button');
-                },
-                child: Icon(
-                  Icons.delete,
-                  color: Colors.white,
+            Row(
+              children: <Widget>[
+                Text('${_currency.symbol} 5,198.2'),
+                SizedBox(
+                  width: 15,
                 ),
-              ),
-            )
+                AnimatedContainer(
+                  duration: Duration(milliseconds: 500),
+                  curve: _selected ? Curves.easeOutQuint : Curves.easeInQuint,
+                  color: Colors.red,
+                  height: 80,
+                  width: _selected ? 45 : 0,
+                  child: InkWell(
+                    onTap: () {
+                      print('delete button');
+                      provider.deleteCurrency(_currency);
+                    },
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ],
         ),
       ),
-      //   child: ListTile(
-      //       leading: Container(
-      //           height: 50,
-      //           width: 50,
-      //           child: Image.asset(_currency.imageFileName)),
-      //       title: Text(_currency.nationName),
-      //       subtitle: Text(
-      //         '1 ${_currency.code} = 1296 ${_currency.code}',
-      //         style: textTheme.body2,
-      //       ),
-      //       trailing: Column(
-      //         children: <Widget>[
-      //           Text('${_currency.symbol} 5,198.2'),
-      //           Icon(Icons.delete)
-      //         ],
-      //       )),
-      // ),
+
     );
+  }
+}
+
+class CurrencyListViewWidget extends StatefulWidget {
+  @override
+  _CurrencyListViewWidgetState createState() => _CurrencyListViewWidgetState();
+}
+
+class _CurrencyListViewWidgetState extends State<CurrencyListViewWidget> {
+  @override
+  Widget build(BuildContext context) {
+    final CurrencyProvider provider = Provider.of<CurrencyProvider>(context);
+
+    List<Currency> currencies = provider.comparedCurrencies;
+    currencies.forEach((item) => print(item.nationName));
+    return ListView.builder(
+        physics: BouncingScrollPhysics(),
+        itemCount: currencies.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return CurrencyItemWidget(currencies[index]);
+        });
   }
 }

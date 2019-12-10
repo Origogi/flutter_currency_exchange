@@ -12,7 +12,10 @@ class CurrencyProvider extends ChangeNotifier {
   ];
 
   List<Currency> get notAddedCurrency {
-    return currencyBank.values.toSet().difference(_comparedCurrencies.toSet()).toList();
+    return currencyBank.values
+        .toSet()
+        .difference(_comparedCurrencies.toSet())
+        .toList();
   }
 
   Currency get selectedCurrency => _myCurrency;
@@ -29,8 +32,14 @@ class CurrencyProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-   void addCurrency(Currency currency) {
+  void addCurrency(Currency currency) {
     _comparedCurrencies.add(currency);
+    notifyListeners();
+  }
+
+  void deleteCurrency(Currency currency) {
+    print("delete : " + currency.nationName);
+    _comparedCurrencies.remove(currency);
     notifyListeners();
   }
 
