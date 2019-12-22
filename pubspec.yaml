@@ -13,6 +13,7 @@ dependencies:
   provider: ^3.0.0+1
   cupertino_icons: ^0.1.2
   rxdart: ^0.22.6
+  fl_chart: ^0.6.0
 
 
 dev_dependencies:

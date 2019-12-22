@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:flutter_currency/model/currency.dart';
+import 'package:flutter_currency/page/chart_page.dart';
 import 'package:flutter_currency/page/item_picker_page.dart';
 import 'package:flutter_currency/provider/currency_provider.dart';
 import 'package:provider/provider.dart';
@@ -265,21 +266,29 @@ class MenuItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Icon(
-          _icon,
-          color: Colors.white,
-          size: 30,
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        Text(
-          _title,
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        )
-      ],
+    return InkWell(
+      onTap: () {
+        print('tap');
+         Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return ChartPage();
+            }));
+      },
+      child: Row(
+        children: <Widget>[
+          Icon(
+            _icon,
+            color: Colors.white,
+            size: 30,
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          Text(
+            _title,
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          )
+        ],
+      ),
     );
   }
 }
@@ -301,7 +310,6 @@ class _CurrencyListViewWidgetState extends State<CurrencyListViewWidget> {
 
     List<Currency> currencies = provider.comparedCurrencies;
 
-    TextTheme textTheme = Theme.of(context).textTheme;
 
     return ListView.builder(
         physics: BouncingScrollPhysics(),
@@ -330,7 +338,6 @@ class CurrencyItemWidget extends StatefulWidget {
 
 class _CurrencyItemWidgetState extends State<CurrencyItemWidget> {
   Currency _currency;
-  bool _selected = false;
 
   _CurrencyItemWidgetState(this._currency);
   @override
