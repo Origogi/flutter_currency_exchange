@@ -284,8 +284,6 @@ class MenuItemWidget extends StatelessWidget {
   }
 }
 
-
-
 class CurrencyListViewWidget extends StatefulWidget {
   CurrencyListViewWidget();
 
@@ -305,109 +303,22 @@ class _CurrencyListViewWidgetState extends State<CurrencyListViewWidget> {
 
     TextTheme textTheme = Theme.of(context).textTheme;
 
-    // _currencies.forEach((item) => print(item.nationName));
     return ListView.builder(
         physics: BouncingScrollPhysics(),
         itemCount: currencies.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          // return CurrencyItemWidget(currencies[index]);
-          return Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  GestureDetector(
-                    onLongPress: () {
-                      setState(() {
-                        selected = currencies[index].nationName;
-                      });
-                    },
-                    onTapDown: (_) {
-                      setState(() {
-                        selected = '';
-                      });
-                    },
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Container(
-                                child: Image.asset(
-                                    currencies[index].imageFileName),
-                                height: 50,
-                                width: 50,
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(currencies[index].nationName),
-                                  Text(
-                                    '1 ${currencies[index].code} = 1296 ${currencies[index].code}',
-                                    style: textTheme.body2,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          // Text('${_currency.symbol} 5,198.2'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text('${currencies[index].symbol} 5,198.2'),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      AnimatedContainer(
-                        duration: Duration(milliseconds: 500),
-                        curve: selected == currencies[index].nationName
-                            ? Curves.easeOutQuint
-                            : Curves.easeInQuint,
-                        color: Colors.red,
-                        height: 80,
-                        width: selected == currencies[index].nationName ? 45 : 0,
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              print('delete button');
-                              provider.deleteCurrency(currencies[index]);
-                              selected = '';
-                            });
-                          },
-                          child: Icon(
-                            Icons.delete,
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
+          print('');
+
+          return Dismissible(
+              key: UniqueKey(),
+              onDismissed: (direction) {
+                provider.deleteCurrency(currencies[index]);
+              },
+              child: CurrencyItemWidget(currencies[index]));
         });
   }
 }
-
 
 class CurrencyItemWidget extends StatefulWidget {
   final Currency _currency;
@@ -425,89 +336,54 @@ class _CurrencyItemWidgetState extends State<CurrencyItemWidget> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    CurrencyProvider provider = Provider.of<CurrencyProvider>(context);
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15.0),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            GestureDetector(
-              onLongPress: () {
-                setState(() {
-                  _selected = true;
-                });
-              },
-              onTapDown: (_) {
-                setState(() {
-                  _selected = false;
-                });
-              },
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Container(
-                          child: Image.asset(_currency.imageFileName),
-                          height: 50,
-                          width: 50,
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(_currency.nationName),
-                            Text(
-                              '1 ${_currency.code} = 1296 ${_currency.code}',
-                              style: textTheme.body2,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    // Text('${_currency.symbol} 5,198.2'),
-                  ],
-                ),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+
+                      Container(
+                        child: Image.asset(_currency.imageFileName),
+                        height: 50,
+                        width: 50,
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(_currency.nationName),
+                          Text(
+                            '1 ${_currency.code} = 1296 ${_currency.code}',
+                            style: textTheme.body2,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  // Text('${_currency.symbol} 5,198.2'),
+                ],
               ),
             ),
             Row(
               children: <Widget>[
                 Text('${_currency.symbol} 5,198.2'),
-                SizedBox(
-                  width: 15,
-                ),
-                AnimatedContainer(
-                  duration: Duration(milliseconds: 500),
-                  curve: _selected ? Curves.easeOutQuint : Curves.easeInQuint,
-                  color: Colors.red,
-                  height: 80,
-                  width: _selected ? 45 : 0,
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        print('delete button');
-                        provider.deleteCurrency(_currency);
-                      });
-                    },
-                    child: Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                    ),
-                  ),
-                )
+
               ],
             ),
           ],
