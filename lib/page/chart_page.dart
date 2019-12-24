@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_currency/model/currency.dart';
 
 class ChartPage extends StatefulWidget {
   @override
@@ -10,6 +11,9 @@ class ChartPage extends StatefulWidget {
 class _ChartPageState extends State<ChartPage>
     with SingleTickerProviderStateMixin {
   AnimationController _animationController;
+
+  Currency myCurrency;
+  Currency otherCurrency;
 
   @override
   void initState() {
@@ -26,6 +30,9 @@ class _ChartPageState extends State<ChartPage>
 
   @override
   Widget build(BuildContext context) {
+    myCurrency = currencyBank[southKorea];
+    otherCurrency = currencyBank[usa];
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -46,7 +53,9 @@ class _ChartPageState extends State<ChartPage>
                       color: Colors.white,
                       size: 30,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
@@ -64,6 +73,65 @@ class _ChartPageState extends State<ChartPage>
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(Icons.arrow_drop_down),
+                                  ),
+                                  Container(
+                                      width: 50,
+                                      height: 50,
+                                      child: Image.asset(
+                                        myCurrency.imageFileName,
+                                      )),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(myCurrency.code)
+                                ],
+                              ),
+                              Icon(
+                                Icons.compare_arrows,
+                                size: 30,
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Text(otherCurrency.code),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                      width: 50,
+                                      height: 50,
+                                      child: Image.asset(
+                                        otherCurrency.imageFileName,
+                                      )),
+                                  IconButton(
+                                    icon: Icon(Icons.arrow_drop_down),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Text('${myCurrency.symbol} 1,000',
+                                  style: TextStyle(
+                                      fontSize: 30, color: Colors.blue)),
+                              Text('${otherCurrency.symbol} 1,200',
+                                  style: TextStyle(
+                                      fontSize: 30, color: Colors.blue))
+                            ],
+                          )
+                        ],
                       ),
                     ),
                   ),
