@@ -8,13 +8,11 @@ import 'package:provider/provider.dart';
 class ItemPickerPage extends StatelessWidget {
 
   List<Currency> _currencies;
-  Function _itemSelectedFuction;
 
-  ItemPickerPage(this._currencies, this._itemSelectedFuction);
+  ItemPickerPage(this._currencies);
 
   @override
   Widget build(BuildContext context) {
-    final CurrencyProvider provider = Provider.of<CurrencyProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -30,8 +28,7 @@ class ItemPickerPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    _itemSelectedFuction(context, _currencies[index]);
-                    Navigator.pop(context);
+                    Navigator.pop(context, _currencies[index]);
                   },
                   child: Card(
                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),

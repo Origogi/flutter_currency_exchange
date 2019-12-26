@@ -2,6 +2,10 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_currency/model/currency.dart';
+import 'package:flutter_currency/provider/currency_provider.dart';
+import 'package:provider/provider.dart';
+
+import 'item_picker_page.dart';
 
 class ChartPage extends StatefulWidget {
   @override
@@ -12,8 +16,8 @@ class _ChartPageState extends State<ChartPage>
     with SingleTickerProviderStateMixin {
   AnimationController _animationController;
 
-  Currency myCurrency;
-  Currency otherCurrency;
+  Currency myCurrency = currencyBank[southKorea];
+  Currency otherCurrency  = currencyBank[usa];
 
   @override
   void initState() {
@@ -30,8 +34,6 @@ class _ChartPageState extends State<ChartPage>
 
   @override
   Widget build(BuildContext context) {
-    myCurrency = currencyBank[southKorea];
-    otherCurrency = currencyBank[usa];
 
     return SafeArea(
       child: Scaffold(
@@ -84,6 +86,9 @@ class _ChartPageState extends State<ChartPage>
                                 children: <Widget>[
                                   IconButton(
                                     icon: Icon(Icons.arrow_drop_down),
+                                    onPressed: () {
+                                      _changeMyCurrency(context);
+                                    },
                                   ),
                                   Container(
                                       width: 50,
@@ -115,6 +120,9 @@ class _ChartPageState extends State<ChartPage>
                                       )),
                                   IconButton(
                                     icon: Icon(Icons.arrow_drop_down),
+                                    onPressed: () {
+                                      _changeOtherCurrency(context);
+                                    },
                                   ),
                                 ],
                               ),
@@ -154,6 +162,46 @@ class _ChartPageState extends State<ChartPage>
         ),
       ),
     );
+  }
+
+  void _changeMyCurrency(BuildContext context) async {
+    final CurrencyProvider provider = Provider.of<CurrencyProvider>(context);
+
+    List<Currency> currencies = [];
+    currencies.addAll(provider.comparedCurrencies);
+    currencies.add(provider.selectedCurrency);
+
+    currencies.remove(myCurrency);
+
+    Currency result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ItemPickerPage(currencies);
+    }));
+    print("result : " + result.nationName);
+
+    setState(() {
+      myCurrency = result;
+    });
+  }
+
+  void _changeOtherCurrency(BuildContext context) async {
+    final CurrencyProvider provider = Provider.of<CurrencyProvider>(context);
+
+    List<Currency> currencies = [];
+    currencies.addAll(provider.comparedCurrencies);
+    currencies.add(provider.selectedCurrency);
+
+    currencies.remove(otherCurrency);
+
+    Currency result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ItemPickerPage(currencies);
+    }));
+    print("result : " + result.nationName);
+
+    setState(() {
+      otherCurrency = result;
+    });
   }
 }
 

@@ -61,12 +61,7 @@ class _HomePageState extends State<HomePage>
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return ItemPickerPage(provider.notAddedCurrency,
-                  (context, currency) {
-                Provider.of<CurrencyProvider>(context).addCurrency(currency);
-              });
-            }));
+            _addCurrency(context);
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -204,15 +199,7 @@ class _HomePageState extends State<HomePage>
                                 IconButton(
                                   icon: Icon(Icons.settings),
                                   onPressed: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return ItemPickerPage(
-                                          provider.comparedCurrencies,
-                                          (context, currency) {
-                                        Provider.of<CurrencyProvider>(context)
-                                            .updateMyCurrency(currency);
-                                      });
-                                    }));
+                                    _changeMyCurrency(context);
                                   },
                                 )
                               ],
@@ -256,6 +243,29 @@ class _HomePageState extends State<HomePage>
       ),
     );
   }
+
+  void _changeMyCurrency(BuildContext context) async {
+    final CurrencyProvider provider = Provider.of<CurrencyProvider>(context);
+
+    Currency result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ItemPickerPage(provider.comparedCurrencies);
+    }));
+    print("result : " + result.nationName);
+
+    provider.updateMyCurrency(result);
+  }
+
+  void _addCurrency(BuildContext context) async {
+    final CurrencyProvider provider = Provider.of<CurrencyProvider>(context);
+
+    Currency result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ItemPickerPage(provider.notAddedCurrency);
+    }));
+
+    provider.addCurrency(result);
+  }
 }
 
 class MenuItemWidget extends StatelessWidget {
@@ -269,9 +279,9 @@ class MenuItemWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         print('tap');
-         Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return ChartPage();
-            }));
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return ChartPage();
+        }));
       },
       child: Row(
         children: <Widget>[
@@ -309,7 +319,6 @@ class _CurrencyListViewWidgetState extends State<CurrencyListViewWidget> {
     final CurrencyProvider provider = Provider.of<CurrencyProvider>(context);
 
     List<Currency> currencies = provider.comparedCurrencies;
-
 
     return ListView.builder(
         physics: BouncingScrollPhysics(),
@@ -359,7 +368,6 @@ class _CurrencyItemWidgetState extends State<CurrencyItemWidget> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-
                       Container(
                         child: Image.asset(_currency.imageFileName),
                         height: 50,
@@ -390,7 +398,6 @@ class _CurrencyItemWidgetState extends State<CurrencyItemWidget> {
             Row(
               children: <Widget>[
                 Text('${_currency.symbol} 5,198.2'),
-
               ],
             ),
           ],
