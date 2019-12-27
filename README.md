@@ -19,6 +19,8 @@ https://www.flaticon.com/packs/international-flags-3
 
 - [x] 기본 레이아웃 만들기
 - [x] 환율 정보 List 추가
-- [ ] 환율 정보 List 삭제
+- [x] 환율 정보 List 삭제
+- [ ] Chart Page 만들기
+- [ ] Setting Page 만들기
 - [ ] API 연결
 
