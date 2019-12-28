@@ -251,7 +251,6 @@ class _HomePageState extends State<HomePage>
         await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ItemPickerPage(provider.comparedCurrencies);
     }));
-    print("result : " + result.nationName);
 
     provider.updateMyCurrency(result);
   }
@@ -278,7 +277,6 @@ class MenuItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        print('tap');
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return ChartPage();
         }));
@@ -325,7 +323,6 @@ class _CurrencyListViewWidgetState extends State<CurrencyListViewWidget> {
         itemCount: currencies.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          print('');
 
           return Dismissible(
               key: UniqueKey(),
@@ -391,7 +388,6 @@ class _CurrencyItemWidgetState extends State<CurrencyItemWidget> {
                   SizedBox(
                     width: 15,
                   ),
-                  // Text('${_currency.symbol} 5,198.2'),
                 ],
               ),
             ),
