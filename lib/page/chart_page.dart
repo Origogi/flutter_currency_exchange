@@ -17,7 +17,7 @@ class _ChartPageState extends State<ChartPage>
   AnimationController _animationController;
 
   Currency myCurrency = currencyBank[southKorea];
-  Currency otherCurrency  = currencyBank[usa];
+  Currency otherCurrency = currencyBank[usa];
 
   @override
   void initState() {
@@ -34,7 +34,6 @@ class _ChartPageState extends State<ChartPage>
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -177,11 +176,12 @@ class _ChartPageState extends State<ChartPage>
         await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ItemPickerPage(currencies);
     }));
-    print("result : " + result.nationName);
 
-    setState(() {
-      myCurrency = result;
-    });
+    if (result != null) {
+      setState(() {
+        myCurrency = result;
+      });
+    }
   }
 
   void _changeOtherCurrency(BuildContext context) async {
@@ -197,11 +197,12 @@ class _ChartPageState extends State<ChartPage>
         await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ItemPickerPage(currencies);
     }));
-    print("result : " + result.nationName);
 
-    setState(() {
-      otherCurrency = result;
-    });
+    if (result != null) {
+      setState(() {
+        otherCurrency = result;
+      });
+    }
   }
 }
 

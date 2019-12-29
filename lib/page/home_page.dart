@@ -252,7 +252,9 @@ class _HomePageState extends State<HomePage>
       return ItemPickerPage(provider.comparedCurrencies);
     }));
 
-    provider.updateMyCurrency(result);
+    if (result != null) {
+      provider.updateMyCurrency(result);
+    }
   }
 
   void _addCurrency(BuildContext context) async {
@@ -323,7 +325,6 @@ class _CurrencyListViewWidgetState extends State<CurrencyListViewWidget> {
         itemCount: currencies.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-
           return Dismissible(
               key: UniqueKey(),
               onDismissed: (direction) {
