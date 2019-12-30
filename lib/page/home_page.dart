@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:flutter_currency/model/currency.dart';
+import 'package:flutter_currency/page/calculator_page.dart';
 import 'package:flutter_currency/page/chart_page.dart';
 import 'package:flutter_currency/page/item_picker_page.dart';
+import 'package:flutter_currency/page/settings_page.dart';
 import 'package:flutter_currency/provider/currency_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -39,8 +41,6 @@ class _HomePageState extends State<HomePage>
     final CurrencyProvider provider = Provider.of<CurrencyProvider>(context);
 
     Currency myCurrency = provider.selectedCurrency;
-    List<Currency> currencies = provider.comparedCurrencies;
-    currencies.forEach((item) => print(item.nationName));
 
     final height = MediaQuery.of(context).size.height;
 
@@ -116,16 +116,40 @@ class _HomePageState extends State<HomePage>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              MenuItemWidget(Icons.show_chart, 'Charts'),
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return ChartPage();
+                                    }));
+                                  },
+                                  child: MenuItemWidget(
+                                      Icons.show_chart, 'Charts')),
                               SizedBox(
                                 height: 15,
                               ),
-                              MenuItemWidget(
-                                  Icons.compare_arrows, 'Calculator'),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return CalculatorPage();
+                                    }));
+                                },
+                                child: MenuItemWidget(
+                                    Icons.compare_arrows, 'Calculator'),
+                              ),
                               SizedBox(
                                 height: 15,
                               ),
-                              MenuItemWidget(Icons.settings, 'Settings')
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return SettingsPage();
+                                    }));
+                                  },
+                                  child: MenuItemWidget(
+                                      Icons.settings, 'Settings'))
                             ],
                           ),
                         ),
@@ -265,7 +289,9 @@ class _HomePageState extends State<HomePage>
       return ItemPickerPage(provider.notAddedCurrency);
     }));
 
-    provider.addCurrency(result);
+    if (result != null) {
+      provider.addCurrency(result);
+    }
   }
 }
 
@@ -277,28 +303,21 @@ class MenuItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ChartPage();
-        }));
-      },
-      child: Row(
-        children: <Widget>[
-          Icon(
-            _icon,
-            color: Colors.white,
-            size: 30,
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          Text(
-            _title,
-            style: TextStyle(fontSize: 18, color: Colors.white),
-          )
-        ],
-      ),
+    return Row(
+      children: <Widget>[
+        Icon(
+          _icon,
+          color: Colors.white,
+          size: 30,
+        ),
+        SizedBox(
+          width: 20,
+        ),
+        Text(
+          _title,
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        )
+      ],
     );
   }
 }
