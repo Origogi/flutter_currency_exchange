@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:flutter_currency/model/currency.dart';
-import 'package:flutter_currency/page/calculator_page.dart';
 import 'package:flutter_currency/page/chart_page.dart';
 import 'package:flutter_currency/page/item_picker_page.dart';
-import 'package:flutter_currency/page/settings_page.dart';
 import 'package:flutter_currency/provider/currency_provider.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' show Platform;
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -41,6 +40,8 @@ class _HomePageState extends State<HomePage>
     final CurrencyProvider provider = Provider.of<CurrencyProvider>(context);
 
     Currency myCurrency = provider.selectedCurrency;
+    List<Currency> currencies = provider.comparedCurrencies;
+    currencies.forEach((item) => print(item.nationName));
 
     final height = MediaQuery.of(context).size.height;
 
@@ -116,40 +117,16 @@ class _HomePageState extends State<HomePage>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              InkWell(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return ChartPage();
-                                    }));
-                                  },
-                                  child: MenuItemWidget(
-                                      Icons.show_chart, 'Charts')),
+                              MenuItemWidget(Icons.show_chart, 'Charts'),
                               SizedBox(
                                 height: 15,
                               ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return CalculatorPage();
-                                    }));
-                                },
-                                child: MenuItemWidget(
-                                    Icons.compare_arrows, 'Calculator'),
-                              ),
+                              MenuItemWidget(
+                                  Icons.compare_arrows, 'Calculator'),
                               SizedBox(
                                 height: 15,
                               ),
-                              InkWell(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return SettingsPage();
-                                    }));
-                                  },
-                                  child: MenuItemWidget(
-                                      Icons.settings, 'Settings'))
+                              MenuItemWidget(Icons.settings, 'Settings')
                             ],
                           ),
                         ),
@@ -235,7 +212,9 @@ class _HomePageState extends State<HomePage>
                           curve: selected
                               ? Curves.easeOutQuint
                               : Curves.easeInQuint,
-                          height: height - (selected ? 550 : 350),
+                          height: height -
+                              (selected ? 550 : 350) -
+                              (Platform.isAndroid ? 0 : 50),
                           child: CurrencyListViewWidget(),
                         ),
                       ],
@@ -303,21 +282,28 @@ class MenuItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Icon(
-          _icon,
-          color: Colors.white,
-          size: 30,
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        Text(
-          _title,
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        )
-      ],
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return ChartPage();
+        }));
+      },
+      child: Row(
+        children: <Widget>[
+          Icon(
+            _icon,
+            color: Colors.white,
+            size: 30,
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          Text(
+            _title,
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          )
+        ],
+      ),
     );
   }
 }
@@ -331,7 +317,6 @@ class CurrencyListViewWidget extends StatefulWidget {
 
 class _CurrencyListViewWidgetState extends State<CurrencyListViewWidget> {
   _CurrencyListViewWidgetState();
-  String selected = '';
 
   @override
   Widget build(BuildContext context) {
