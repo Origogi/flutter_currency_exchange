@@ -6,7 +6,6 @@ import 'package:flutter_currency/page/chart_page.dart';
 import 'package:flutter_currency/page/item_picker_page.dart';
 import 'package:flutter_currency/provider/currency_provider.dart';
 import 'package:provider/provider.dart';
-import 'dart:io' show Platform;
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -43,8 +42,6 @@ class _HomePageState extends State<HomePage>
     List<Currency> currencies = provider.comparedCurrencies;
     currencies.forEach((item) => print(item.nationName));
 
-    final height = MediaQuery.of(context).size.height;
-
     return WillPopScope(
       onWillPop: () {
         if (selected) {
@@ -76,64 +73,62 @@ class _HomePageState extends State<HomePage>
               height: selected ? 250.0 : 180.0,
               color: Colors.blue,
             ),
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  IconButton(
-                    icon: AnimatedIcon(
-                      size: 30,
-                      icon: AnimatedIcons.menu_arrow,
-                      progress: _animationController,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        selected = !selected;
-                        if (selected) {
-                          _animationController.forward();
-                        } else {
-                          _animationController.reverse();
-                        }
-                      });
-                    },
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                IconButton(
+                  icon: AnimatedIcon(
+                    size: 30,
+                    icon: AnimatedIcons.menu_arrow,
+                    progress: _animationController,
+                    color: Colors.white,
                   ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  AnimatedContainer(
-                    height: selected ? 200.0 : 0.0,
-                    width: double.infinity,
+                  onPressed: () {
+                    setState(() {
+                      selected = !selected;
+                      if (selected) {
+                        _animationController.forward();
+                      } else {
+                        _animationController.reverse();
+                      }
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                AnimatedContainer(
+                  height: selected ? 200.0 : 0.0,
+                  width: double.infinity,
+                  duration: Duration(milliseconds: 500),
+                  curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
+                  child: AnimatedOpacity(
+                    opacity: selected ? 1.0 : 0.0,
                     duration: Duration(milliseconds: 500),
-                    curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
-                    child: AnimatedOpacity(
-                      opacity: selected ? 1.0 : 0.0,
-                      duration: Duration(milliseconds: 500),
-                      curve:
-                          selected ? Curves.easeInQuint : Curves.easeOutQuint,
-                      child: SingleChildScrollView(
-                        child: Container(
-                          padding: EdgeInsets.only(left: 30),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              MenuItemWidget(Icons.show_chart, 'Charts'),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              MenuItemWidget(
-                                  Icons.compare_arrows, 'Calculator'),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              MenuItemWidget(Icons.settings, 'Settings')
-                            ],
-                          ),
+                    curve: selected ? Curves.easeInQuint : Curves.easeOutQuint,
+                    child: SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.only(left: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            MenuItemWidget(Icons.show_chart, 'Charts'),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            MenuItemWidget(Icons.compare_arrows, 'Calculator'),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            MenuItemWidget(Icons.settings, 'Settings')
+                          ],
                         ),
                       ),
                     ),
                   ),
-                  AnimatedContainer(
+                ),
+                Expanded(
+                  child: AnimatedContainer(
                     padding: EdgeInsets.all(15),
                     duration: Duration(milliseconds: 500),
                     curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
@@ -141,6 +136,7 @@ class _HomePageState extends State<HomePage>
                       color: selected ? Colors.black54 : Colors.transparent,
                     ),
                     child: Column(
+                      mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
@@ -207,21 +203,14 @@ class _HomePageState extends State<HomePage>
                             ),
                           ),
                         ),
-                        AnimatedContainer(
-                          duration: Duration(milliseconds: 500),
-                          curve: selected
-                              ? Curves.easeOutQuint
-                              : Curves.easeInQuint,
-                          height: height -
-                              (selected ? 550 : 350) -
-                              (Platform.isAndroid ? 0 : 50),
+                        Expanded(
                           child: CurrencyListViewWidget(),
-                        ),
+                        )
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ]),
         ),
