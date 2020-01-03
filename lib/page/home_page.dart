@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage>
               duration: Duration(milliseconds: 500),
               curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
               width: double.infinity,
-              height: selected ? 250.0 : 180.0,
+              height: selected ? 200.0 : 180.0,
               color: Colors.blue,
             ),
             Column(
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage>
                   height: 2,
                 ),
                 AnimatedContainer(
-                  height: selected ? 200.0 : 0.0,
+                  height: selected ? 150.0 : 0.0,
                   width: double.infinity,
                   duration: Duration(milliseconds: 500),
                   curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
@@ -274,6 +274,7 @@ class MenuItemWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
+          
           return ChartPage();
         }));
       },

@@ -13,12 +13,14 @@ class ItemPickerPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          title: Text('Select Currency', style: TextStyle(color: Colors.white),),
           backgroundColor: Colors.blue,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
               color: Colors.white,
             ),
+            
             onPressed: () {
               Navigator.of(context).pop();
             },

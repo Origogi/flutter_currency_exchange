@@ -101,9 +101,18 @@ class _ChartPageState extends State<ChartPage>
                                   Text(myCurrency.code)
                                 ],
                               ),
-                              Icon(
-                                Icons.compare_arrows,
-                                size: 30,
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    var temp = myCurrency;
+                                    myCurrency = otherCurrency;
+                                    otherCurrency = temp;
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.compare_arrows,
+                                  size: 30,
+                                ),
                               ),
                               Row(
                                 children: <Widget>[
@@ -224,13 +233,12 @@ class _LineChartSample2State extends State<LineChartSample2> {
     return Stack(
       children: <Widget>[
         AspectRatio(
-          aspectRatio: 1.20,
+          aspectRatio: 1.0,
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(
                   Radius.circular(18),
                 ),
-                // color: const Color(0xff232d37)),
                 color: Colors.white),
             child: Padding(
               padding: const EdgeInsets.only(
