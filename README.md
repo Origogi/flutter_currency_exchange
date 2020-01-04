@@ -19,11 +19,10 @@ https://www.flaticon.com/packs/international-flags-3
 
 - [x] 기본 레이아웃 만들기
 
-- [x] Main Page 만들기
+- [ ] Main Page 만들기
   - [x] 환율 정보 List 추가
   - [x] 환율 정보 List 삭제
-
-- [x] Main Page 만들기
+  - [ ] List item drag and drop 구현하기
 
 - [ ] Chart Page 만들기
 
