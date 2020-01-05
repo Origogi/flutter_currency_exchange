@@ -128,85 +128,97 @@ class _HomePageState extends State<HomePage>
                   ),
                 ),
                 Expanded(
-                  child: AnimatedContainer(
-                    padding: EdgeInsets.all(15),
-                    duration: Duration(milliseconds: 500),
-                    curve: selected ? Curves.easeOutQuint : Curves.easeInQuint,
-                    foregroundDecoration: BoxDecoration(
-                      color: selected ? Colors.black54 : Colors.transparent,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Currency Calculate',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (selected) {
+                        setState(() {
+                          selected = false;
+                        });
+                      }
+                    },
+                    child: AnimatedContainer(
+                      padding: EdgeInsets.all(15),
+                      duration: Duration(milliseconds: 500),
+                      curve:
+                          selected ? Curves.easeOutQuint : Curves.easeInQuint,
+                      foregroundDecoration: BoxDecoration(
+                        color: selected ? Colors.black54 : Colors.transparent,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Currency Calculate',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
-                          child: Container(
-                            width: double.infinity,
-                            margin: EdgeInsets.all(15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Container(
-                                        height: 50,
-                                        width: 50,
-                                        child: Image.asset(
-                                            myCurrency.imageFileName)),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          myCurrency.nationName,
-                                          style: textTheme.title,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          '${myCurrency.symbol} 1,000',
-                                          style: TextStyle(
-                                              fontSize: 30, color: Colors.blue),
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        Text(
-                                          '2019-11-11 WED 10:00 am',
-                                          style: textTheme.body2,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.settings),
-                                  onPressed: () {
-                                    _changeMyCurrency(context);
-                                  },
-                                )
-                              ],
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.all(15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      Container(
+                                          height: 50,
+                                          width: 50,
+                                          child: Image.asset(
+                                              myCurrency.imageFileName)),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            myCurrency.nationName,
+                                            style: textTheme.title,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            '${myCurrency.symbol} 1,000',
+                                            style: TextStyle(
+                                                fontSize: 30,
+                                                color: Colors.blue),
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Text(
+                                            '2019-11-11 WED 10:00 am',
+                                            style: textTheme.body2,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.settings),
+                                    onPressed: () {
+                                      _changeMyCurrency(context);
+                                    },
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: CurrencyListViewWidget(),
-                        )
-                      ],
+                          Expanded(
+                            child: CurrencyListViewWidget(),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -274,7 +286,6 @@ class MenuItemWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          
           return ChartPage();
         }));
       },
